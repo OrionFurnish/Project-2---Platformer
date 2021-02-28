@@ -3,20 +3,24 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-public class LevelParserStarter : MonoBehaviour
-{
+public class LevelParserStarter : MonoBehaviour {
     public string filename;
 
-    public GameObject Rock;
-    public GameObject Brick;
-    public GameObject QuestionBox;
-    public GameObject Stone;
+    public GameObject rock;
+    public GameObject brick;
+    public GameObject questionBox;
+    public GameObject stone;
+    public GameObject spikes;
+    public GameObject flag;
+    public GameObject fall;
     public GameObject player;
 
     public Transform parentTransform;
+    GameManager gameManager;
 
     void Start()
     {
+        gameManager = GetComponent<GameManager>();
         RefreshParse();
     }
 
@@ -48,11 +52,17 @@ public class LevelParserStarter : MonoBehaviour
 
         switch (spot)
         {
-            case 'b': spawnedObject = Instantiate(Brick, parentTransform); break;
-            case '?': spawnedObject = Instantiate(QuestionBox, parentTransform); break;
-            case 'x': spawnedObject = Instantiate(Rock, parentTransform); break;
-            case 's': spawnedObject = Instantiate(Stone, parentTransform); break;
-            case 'p': spawnedObject = Instantiate(player, positionToSpawn, Quaternion.identity); break;
+            case 'b': spawnedObject = Instantiate(brick, parentTransform); break;
+            case '?': spawnedObject = Instantiate(questionBox, parentTransform); break;
+            case 'x': spawnedObject = Instantiate(rock, parentTransform); break;
+            case 's': spawnedObject = Instantiate(stone, parentTransform); break;
+            case 'k': spawnedObject = Instantiate(spikes, parentTransform); break;
+            case 'f': spawnedObject = Instantiate(flag, parentTransform); break;
+            case 'w': spawnedObject = Instantiate(fall, parentTransform); break;
+            case 'p':
+                spawnedObject = Instantiate(player, positionToSpawn, Quaternion.identity);
+                gameManager.player = spawnedObject; // Used to kill player at game end
+                break;
             default: return;
         }
         if (spawnedObject != null) {
